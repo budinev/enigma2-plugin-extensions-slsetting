@@ -35,8 +35,7 @@ class slDownloader(Screen):
         base_cmd = "wget -U '%s' --no-check-certificate -T 10 -t 1" % UA
         
         if self.scelta == "xml":
-            # Per il satellites.xml non serve riavviare Enigma2, basta rimpiazzarlo
-            cmd = "%s %ssatellites.xml -O /etc/tuxbox/satellites.xml" % (base_cmd, URL_BASE)
+            cmd = "wget --no-check-certificate %ssatellites.xml -O /etc/tuxbox/satellites.xml && sleep 2 && killall -9 enigma2" % URL_BASE
         else:
             f = {"mono": "mono_13.zip", "dual": "dual_13_19.zip", "dual_dtt": "dual_13_19_dtt.zip"}.get(self.scelta, "")
             
