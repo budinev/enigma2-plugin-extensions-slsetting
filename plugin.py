@@ -37,12 +37,17 @@ class slDownloader(Screen):
         if self.scelta == "xml":
             cmd = "wget --no-check-certificate %ssatellites.xml -O /etc/tuxbox/satellites.xml && sleep 2 && killall -9 enigma2" % URL_BASE
         else:
-            f = {"mono": "mono_13.zip", "dual": "dual_13_19.zip", "dual_dtt": "dual_13_19_dtt.zip"}.get(self.scelta, "")
+            # Abbiamo aggiunto solo 'quadri' e 'motor' qui sotto
+            f = {
+                "mono": "mono_13.zip", 
+                "dual": "dual_13_19.zip", 
+                "dual_dtt": "dual_13_19_dtt.zip",
+                "quad": "quad.zip",
+                "motor": "motor.zip",
+                "motor2": "motor2.zip"
+            }.get(self.scelta, "")
             
-            # --- SEQUENZA DEFINITIVA ---
-            # 1. Elimina i vecchi file per evitare "voci vuote"
-            # 2. Scarica e scompatta i nuovi
-            # 3. Forza il riavvio della GUI (Enigma2) per pulire la memoria
+            # --- SEQUENZA DEFINITIVA (Invariata) ---
             cmd = "rm -rf /etc/enigma2/userbouquet.* && rm -rf /etc/enigma2/bouquets.tv && " \
                   "%s %s%s -O /tmp/sl.zip && unzip -o /tmp/sl.zip -d / && " \
                   "rm -f /tmp/sl.zip && sleep 2 && killall -9 enigma2" % (base_cmd, URL_BASE, f)
@@ -72,7 +77,10 @@ class slSettingMain(Screen):
         self.list = [
             ("SatLodge Mono (13E)", "mono"),
             ("SatLodge Dual (13E + 19E)", "dual"),
-            ("SatLodge Dual + DTT (13E+19E+DTT)", "dual_dtt"),
+            ("SatLodge Dual + DTT", "dual_dtt"),
+            ("SatLodge Quadri (9E+13E+16E+19E)", "quad"),
+            ("SatLodge Motor Vhannibal", "motor"),
+            ("SatLodge Motor Mhorpheus", "motor2"),
             ("Aggiorna satellites.xml", "xml")
         ]
         self["title"] = Label("SAT-LODGE SETTINGS PANEL")
